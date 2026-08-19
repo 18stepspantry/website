@@ -98,6 +98,19 @@
 </div></footer>
 <a href="#home" class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">↑</a>
 
+<div id="promoOverlay" class="promo-overlay" hidden>
+  <div class="promo-card">
+    <button id="promoClose" class="promo-close" aria-label="Close offer">×</button>
+    <img id="promoImage" src="" alt="" class="promo-image">
+    <p class="promo-label">SPECIAL OFFER</p>
+    <h3 id="promoName" class="promo-name"></h3>
+    <div class="promo-prices">
+      <span id="promoOldPrice" class="promo-old-price"></span>
+      <span id="promoNewPrice" class="promo-new-price"></span>
+    </div>
+  </div>
+</div>
+
 <script>
 const menuToggle=document.querySelector('.menu-toggle'),nav=document.querySelector('.main-nav');
 if(menuToggle&&nav){menuToggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',open?'true':'false');});nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');}));}
@@ -106,6 +119,64 @@ if(backToTop){
   const updateBackToTop=()=>backToTop.classList.toggle('show',window.scrollY>450);
   window.addEventListener('scroll',updateBackToTop,{passive:true});
   updateBackToTop();
+}
+
+/* ============================================================
+   PROMO POPUP — edit this block whenever the offer changes.
+   Nothing else in this file needs to change.
+
+   enabled   : true to show the popup, false to turn it off
+   image     : path to the product photo, inside images/
+   name      : product name shown in the popup
+   oldPrice  : original price, shown crossed out (leave "" to hide)
+   newPrice  : the offer price, shown highlighted
+   ============================================================ */
+const promoOffer = {
+  enabled: true,
+  image: "images/offer-featured.jpg",
+  name: "Sona Masoori Rice",
+  oldPrice: "$14.50",
+  newPrice: "$11.50"
+};
+/* ============================================================
+   End of editable section — no need to touch anything below.
+   ============================================================ */
+
+if (promoOffer.enabled) {
+  const alreadyDismissed = sessionStorage.getItem('promoDismissed') === 'true';
+
+  if (!alreadyDismissed) {
+    const overlay = document.getElementById('promoOverlay');
+    const closeBtn = document.getElementById('promoClose');
+
+    document.getElementById('promoImage').src = promoOffer.image;
+    document.getElementById('promoImage').alt = promoOffer.name;
+    document.getElementById('promoName').textContent = promoOffer.name;
+    document.getElementById('promoNewPrice').textContent = promoOffer.newPrice;
+
+    const oldPriceEl = document.getElementById('promoOldPrice');
+    if (promoOffer.oldPrice) {
+      oldPriceEl.textContent = promoOffer.oldPrice;
+      oldPriceEl.style.display = '';
+    } else {
+      oldPriceEl.style.display = 'none';
+    }
+
+    const closePromo = () => {
+      overlay.hidden = true;
+      sessionStorage.setItem('promoDismissed', 'true');
+    };
+
+    setTimeout(() => { overlay.hidden = false; }, 900);
+
+    closeBtn.addEventListener('click', closePromo);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closePromo();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !overlay.hidden) closePromo();
+    });
+  }
 }
 </script>
 
