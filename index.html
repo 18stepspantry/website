@@ -202,9 +202,20 @@ if (promoOffer.enabled) {
     const closeBtn = document.getElementById('promoClose');
 
     document.getElementById('promoImage').src = promoOffer.image;
-    document.getElementById('promoImage').alt = promoOffer.name;
-    document.getElementById('promoName').textContent = promoOffer.name;
-    document.getElementById('promoNewPrice').textContent = promoOffer.newPrice;
+    document.getElementById('promoImage').alt = promoOffer.name || '18 Steps Pantry & Spices offer';
+
+    const labelEl = document.querySelector('.promo-label');
+    const nameEl = document.getElementById('promoName');
+    const pricesEl = document.querySelector('.promo-prices');
+
+    if (promoOffer.name) {
+      nameEl.textContent = promoOffer.name;
+      labelEl.style.display = '';
+      nameEl.style.display = '';
+    } else {
+      labelEl.style.display = 'none';
+      nameEl.style.display = 'none';
+    }
 
     const oldPriceEl = document.getElementById('promoOldPrice');
     if (promoOffer.oldPrice) {
@@ -212,6 +223,12 @@ if (promoOffer.enabled) {
       oldPriceEl.style.display = '';
     } else {
       oldPriceEl.style.display = 'none';
+    }
+
+    document.getElementById('promoNewPrice').textContent = promoOffer.newPrice;
+
+    if (!promoOffer.oldPrice && !promoOffer.newPrice) {
+      pricesEl.style.display = 'none';
     }
 
     const closePromo = () => {
