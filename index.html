@@ -43,6 +43,13 @@
 }
 </script>
 <link rel="stylesheet" href="style.css">
+<style>
+/* Diwali celebration image: show the complete image without cropping or forcing a fixed-height crop. */
+.about-section .section-inner.two-column { display: flex; flex-direction: column; align-items: stretch; gap: 2rem; }
+.about-section .about-photo { width: 100%; max-width: none; height: auto; aspect-ratio: auto; overflow: visible; }
+.about-section .about-img { display: block; width: 100%; max-width: 100%; height: auto; max-height: none; object-fit: contain; object-position: center; }
+.about-section .section-copy { width: 100%; max-width: 850px; margin-inline: auto; }
+</style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
 </head>
 <body>
